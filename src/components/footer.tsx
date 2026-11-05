@@ -29,7 +29,7 @@ export function Footer() {
         </div>
       </div>
       <div className="footer-credits">
-        <span>© 2026 SocialSpark · A frontend preview with local demo data</span>
+        <span>© 2026 SocialSpark · Local people, growing good together</span>
         <span className="image-credits">
           Image credits: <a href="https://commons.wikimedia.org/wiki/File:Sure_We_Can_Earthday_clean_2021.jpg" target="_blank" rel="noreferrer">Wil540 art, CC BY-SA 4.0</a>; <a href="https://commons.wikimedia.org/wiki/File:U_S_volunteers_join_Okinawans_in_city_clean_up_(9305828).jpg" target="_blank" rel="noreferrer">U.S. Air Force, public domain</a>.
         </span>

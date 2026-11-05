@@ -23,10 +23,9 @@ export function DashboardPage() {
         <div><p className="eyebrow"><span className="eyebrow-dot" /> Your local workspace</p><h1>Good morning, <em>{user?.name.split(" ")[0]}.</em></h1><p className="page-lead">Here’s what’s moving in your corner of the community.</p></div>
         <Link className={buttonClass({ size: "md" })} href="/create-event"><Icon name="plus" size={17} /> Create an event</Link>
       </div>
-      <div className="demo-banner"><span><Icon name="leaf" size={17} /></span><p><strong>Preview mode</strong><span>These events and activity are saved only on this device. No server is connected yet.</span></p><Link href="/upcoming-events">Browse events <Icon name="arrow" size={15} /></Link></div>
       <div className="dashboard-stats" aria-label="Your activity at a glance">
         <Card className="dashboard-stat"><span>Events you created</span><strong>{ownEvents.length}</strong><small>Your local initiatives</small><span className="stat-line stat-line-forest" /></Card>
-        <Card className="dashboard-stat"><span>Events you joined</span><strong>{joinedIds.length}</strong><small>From this browser</small><span className="stat-line stat-line-leaf" /></Card>
+        <Card className="dashboard-stat"><span>Events you joined</span><strong>{joinedIds.length}</strong><small>Saved to your account</small><span className="stat-line stat-line-leaf" /></Card>
         <Card className="dashboard-stat"><span>Upcoming for you</span><strong>{joinedEvents.length}</strong><small>Future events you joined</small><span className="stat-line stat-line-olive" /></Card>
       </div>
       <div className="dashboard-main-grid">

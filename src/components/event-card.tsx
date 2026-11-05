@@ -10,7 +10,7 @@ export function EventCard({ event, compact = false }: { event: SocialEvent; comp
     <article className={compact ? "event-card event-card-compact" : "event-card"}>
       <Link href={`/events/${event.id}`} className="event-card-image-link" aria-label={`View ${event.title}`}>
         <div className="event-card-image">
-          <Image src={event.thumbnail} alt="" fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" />
+          <Image src={event.thumbnail} alt="" fill sizes="(max-width: 700px) 100vw, (max-width: 1100px) 50vw, 33vw" unoptimized />
           <CategoryBadge category={event.category} />
           {event.isSample && <span className="sample-image-mark">Sample</span>}
         </div>
@@ -21,7 +21,7 @@ export function EventCard({ event, compact = false }: { event: SocialEvent; comp
         <p className="event-card-location"><Icon name="mapPin" size={15} /> {event.location}</p>
         {!compact && <p className="event-card-description">{event.description}</p>}
         <div className="event-card-bottom">
-          <span className="event-card-demo">{event.isSample ? "Preview event" : "Your event"}</span>
+          <span className="event-card-demo">Community event</span>
           <Link className="event-card-action" href={`/events/${event.id}`} aria-label={`View event: ${event.title}`}>View event <Icon name="arrow" size={16} /></Link>
         </div>
       </div>

@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 const filters = ["All events", ...eventCategories];
 
 export function UpcomingEventsPage() {
-  const { events, ready, today } = useAppState();
+  const { events, ready, today, dataError } = useAppState();
   const [activeFilter, setActiveFilter] = useState("All events");
   const [query, setQuery] = useState("");
   const upcoming = useMemo(() => {
@@ -27,7 +27,7 @@ export function UpcomingEventsPage() {
     <div className="listing-page page-gutter">
       <div className="listing-page-heading">
         <div><p className="eyebrow"><span className="eyebrow-dot" /> Local invitations</p><h1>Find your <em>next good thing.</em></h1><p className="page-lead">Browse upcoming community events and choose a way to take part.</p></div>
-        <div className="listing-location"><Icon name="mapPin" size={17} /><span><small>Showing sample events in</small><strong>Dhaka, Bangladesh</strong></span><span className="scope-dot" /></div>
+        <div className="listing-location"><Icon name="mapPin" size={17} /><span><small>Community events in</small><strong>Dhaka, Bangladesh</strong></span><span className="scope-dot" /></div>
       </div>
       <div className="listing-toolbar">
         <label className="search-field">
@@ -40,9 +40,10 @@ export function UpcomingEventsPage() {
       <div className="filter-row" role="group" aria-label="Filter events by type">
         {filters.map((filter) => <Button key={filter} variant={activeFilter === filter ? "primary" : "outline"} size="sm" aria-pressed={activeFilter === filter} onClick={() => setActiveFilter(filter)}>{filter}</Button>)}
       </div>
-      <p className="demo-disclaimer"><span className="demo-disclaimer-dot" /> Frontend preview · Event listings are local sample data and are not live registrations.</p>
       {!ready ? (
         <div className="event-grid listing-event-grid">{Array.from({ length: 6 }).map((_, index) => <div className="event-skeleton" key={index}><span /><i /><i /><i /></div>)}</div>
+      ) : dataError ? (
+        <div className="empty-state"><span className="empty-state-icon"><Icon name="leaf" size={25} /></span><h2>Events are unavailable</h2><p>{dataError}</p></div>
       ) : upcoming.length ? (
         <div className="event-grid listing-event-grid">{upcoming.map((event) => <EventCard event={event} key={event.id} />)}</div>
       ) : (

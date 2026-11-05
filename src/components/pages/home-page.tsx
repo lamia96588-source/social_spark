@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useMemo } from "react";
 import { EventCard } from "@/components/event-card";
 import { Icon } from "@/components/icons";
 import { useAppState } from "@/components/app-provider";
@@ -18,11 +17,7 @@ const gallery = [
 ];
 
 export function HomePage() {
-  const { events, ready, user, today } = useAppState();
-  const upcoming = useMemo(() => {
-    if (!today) return [];
-    return events.filter((event) => event.date >= today).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 6);
-  }, [events, today]);
+  const { recentEvents: upcoming, ready, user, dataError } = useAppState();
   const nextEvent = upcoming[0];
   const createHref = user ? "/create-event" : "/login?next=%2Fcreate-event";
 
@@ -108,13 +103,15 @@ export function HomePage() {
 
       <section className="recent-section page-gutter" id="upcoming">
         <div className="section-heading-row">
-          <div><p className="eyebrow"><span className="eyebrow-dot" /> Open invitations</p><h2>Upcoming <em>near you</em></h2><p className="section-deck">A few good places to begin. All event details here are sample data for this frontend preview.</p></div>
+          <div><p className="eyebrow"><span className="eyebrow-dot" /> Open invitations</p><h2>Upcoming <em>near you</em></h2><p className="section-deck">The next six community events.</p></div>
           <Link className="text-link section-heading-link" href="/upcoming-events">All upcoming events <Icon name="arrow" size={17} /></Link>
         </div>
         {ready && upcoming.length > 0 ? (
           <div className="event-grid home-event-grid">{upcoming.map((event) => <EventCard event={event} key={event.id} />)}</div>
-        ) : (
+        ) : !ready ? (
           <div className="event-grid home-event-grid" aria-label="Loading upcoming events">{Array.from({ length: 3 }).map((_, index) => <div className="event-skeleton" key={index}><span /><i /><i /><i /></div>)}</div>
+        ) : (
+          <div className="empty-state"><h3>{dataError ? "Events are unavailable" : "No upcoming events yet"}</h3><p>{dataError || "Start the first local event in your community."}</p><Link className={buttonClass()} href={createHref}>Create an event</Link></div>
         )}
       </section>
 
@@ -133,7 +130,7 @@ export function HomePage() {
 
       <section className="newsletter-section page-gutter">
         <div className="newsletter-leaf" aria-hidden="true"><Icon name="leaf" size={32} /></div>
-        <div><p className="eyebrow">A little good in your inbox</p><h2>Stay close to what’s growing.</h2><p>Newsletter sign-up is a visual preview for now. Updates will be available when the service is connected.</p></div>
+        <div><p className="eyebrow">A little good in your inbox</p><h2>Stay close to what’s growing.</h2><p>Community updates are coming soon.</p></div>
         <form className="newsletter-form" onSubmit={(event) => event.preventDefault()}>
           <label className="sr-only" htmlFor="newsletter-email">Email address</label>
           <input id="newsletter-email" type="email" placeholder="Your email address" disabled aria-describedby="newsletter-note" />
