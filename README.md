@@ -1,37 +1,35 @@
 # SocialSpark
 
-SocialSpark is a frontend preview for a community driven local events platform, starting with neighbourhood initiatives in Dhaka.
+SocialSpark helps neighbours organize and join local development events in Dhaka.
 
 **Live URL:** Pending deployment.
 
 ## Features
 
-- Browse a curated set of upcoming community events and filter by category or search term.
-- Open event detail pages and join events in the browser demo.
-- Create, update, and delete events from a private workspace with ownership checks in demo state.
-- View joined events and keep a profile with a display name and picture.
-- Switch between light and dark themes across public, account, and workspace pages.
-- Responsive public navigation and a collapsible workspace sidebar for mobile.
-- Form validation, loading placeholders, accessible empty states, and in-app toast feedback.
-- Newsletter signup preview, community gallery, and image credit details.
-
-## Routes
-
-- `/` — public home
-- `/upcoming-events` — public event directory
-- `/events/[id]` — public event details
-- `/login` and `/register` — demo account forms
-- `/dashboard`, `/create-event`, `/manage-events`, `/joined-events`, `/profile` — demo private workspace
+- Browse upcoming events, search by name or location, and filter by category.
+- Discover the next six events on the home page, queried from MongoDB by the API.
+- Create an account with email and password, or sign in through GitHub when OAuth is configured.
+- Create, edit, and delete your own events in a private workspace.
+- Join events and see your participation history, stored in MongoDB.
+- Edit your profile and switch between light and dark themes.
+- Use the responsive layout on phones, tablets, and desktop screens.
 
 ## Local setup
 
-```bash
-npm install
-npm run dev
-```
+1. Set up the [SocialSpark API](https://github.com/lamia96588-source/social_spark_server) and start it on port 5000.
+2. Copy `.env.example` to `.env.local`; set `API_ORIGIN` to the API origin.
+3. Run `npm ci`, then `npm run dev`.
 
-The frontend currently stores demo accounts, events, RSVPs, and theme preferences in local storage. No server, database, API, JWT, newsletter delivery, email verification, or password recovery is connected. Replace the local demo adapter with the service API before using it with real accounts or event data.
+The browser calls the Next.js `/api/*` proxy so session cookies and authenticated API requests use the same site. The server verifies JWTs and enforces event ownership.
 
-## Technology
+## Routes
 
-Next.js App Router, React, TypeScript, and locally authored shadcn-style UI primitives.
+- `/` — public home and six recent upcoming events
+- `/upcoming-events` — searchable public event directory
+- `/events/[id]` — public event details and join action
+- `/login`, `/register` — account forms
+- `/dashboard`, `/create-event`, `/manage-events`, `/joined-events`, `/profile` — private workspace
+
+## Verification
+
+Run `npm run lint` and `npm run build`. The backend has its own checks and setup instructions.
