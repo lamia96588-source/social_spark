@@ -12,7 +12,7 @@ export function AuthLayout({ children }: { children: React.ReactNode }) {
       <div className="auth-form-column">
         <div className="auth-topbar"><BrandMark /><button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}><span className={theme === "light" ? "theme-option theme-option-active" : "theme-option"}><Icon name="sun" size={15} /></span><span className={theme === "dark" ? "theme-option theme-option-active" : "theme-option"}><Icon name="moon" size={14} /></span></button></div>
         <div className="auth-form-content">{children}</div>
-        <p className="auth-copyright">© 2026 SocialSpark · Demo preview</p>
+        <p className="auth-copyright">© 2026 SocialSpark</p>
       </div>
       <aside className="auth-visual-panel">
         <Image src="/images/community-planting.png" alt="Hands gently planting a young sapling" fill priority sizes="(max-width: 860px) 100vw, 48vw" />

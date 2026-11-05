@@ -78,7 +78,7 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
         <div className="sidebar-user">
           <WorkspaceAvatar name={user.name} photo={user.photo} />
           <span className="sidebar-user-copy"><strong>{user.name}</strong><span>Community member</span></span>
-          <button type="button" aria-label="Log out" title="Log out" className="sidebar-logout" onClick={() => { logout(); notify("You’ve signed out of the demo workspace.", "success"); router.push("/"); }}><Icon name="logout" size={17} /></button>
+          <button type="button" aria-label="Log out" title="Log out" className="sidebar-logout" onClick={async () => { try { await logout(); notify("You’ve signed out.", "success"); router.push("/"); } catch (error) { notify(error instanceof Error ? error.message : "Could not sign out.", "error"); } }}><Icon name="logout" size={17} /></button>
         </div>
       </div>
     </>
@@ -97,7 +97,7 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
           <button className="workspace-mobile-trigger" type="button" aria-label="Open workspace menu" onClick={() => setMobileOpen(true)}><Icon name="menu" /></button>
           <div className="workspace-breadcrumb"><span>SocialSpark</span><Icon name="chevronRight" size={15} /><strong>{groups.flatMap((group) => group.items).find((item) => item.href === pathname)?.label ?? "Workspace"}</strong></div>
           <div className="workspace-topbar-actions">
-            <span className="demo-mode-tag"><span /> Demo mode</span>
+            <span className="demo-mode-tag"><span /> Your workspace</span>
             <button className="theme-toggle" type="button" onClick={toggleTheme} aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`} title={`Switch to ${theme === "light" ? "dark" : "light"} theme`}>
               <span className={theme === "light" ? "theme-option theme-option-active" : "theme-option"}><Icon name="sun" size={15} /></span>
               <span className={theme === "dark" ? "theme-option theme-option-active" : "theme-option"}><Icon name="moon" size={14} /></span>
@@ -106,7 +106,7 @@ export function WorkspaceShell({ children }: { children: ReactNode }) {
           </div>
         </header>
         <main className="workspace-page">{children}</main>
-        <footer className="workspace-footer"><span>SocialSpark demo workspace</span><span>Your changes stay in this browser.</span></footer>
+        <footer className="workspace-footer"><span>SocialSpark community workspace</span><span>Small steps count.</span></footer>
       </div>
     </div>
   );

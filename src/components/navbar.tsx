@@ -30,12 +30,16 @@ export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
 
-  function handleLogout() {
-    logout();
-    setProfileOpen(false);
-    setMenuOpen(false);
-    notify("You’ve signed out of the demo workspace.", "success");
-    router.push("/");
+  async function handleLogout() {
+    try {
+      await logout();
+      setProfileOpen(false);
+      setMenuOpen(false);
+      notify("You’ve signed out.", "success");
+      router.push("/");
+    } catch (error) {
+      notify(error instanceof Error ? error.message : "Could not sign out.", "error");
+    }
   }
 
   return (
