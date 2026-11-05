@@ -2,7 +2,7 @@
 
 SocialSpark helps neighbours organize and join local development events in Dhaka.
 
-**Live URL:** Pending deployment.
+**Live URL:** https://social-spark-ten.vercel.app
 
 ## Features
 
