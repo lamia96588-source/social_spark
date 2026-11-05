@@ -10,11 +10,11 @@ import { Icon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
 import { Input, Select, Textarea } from "@/components/ui/input";
 
-export type EventDraft = Omit<SocialEvent, "id" | "createdAt" | "createdBy">;
+export type EventDraft = Omit<SocialEvent, "id" | "createdAt" | "createdBy" | "isSample">;
 
 type EventFormProps = {
   initial?: SocialEvent;
-  onSave: (event: EventDraft) => void;
+  onSave: (event: EventDraft) => Promise<void>;
   onCancel?: () => void;
   submitLabel?: string;
 };
@@ -28,8 +28,9 @@ export function EventForm({ initial, onSave, onCancel, submitLabel }: EventFormP
   const [location, setLocation] = useState(initial?.location ?? "");
   const [date, setDate] = useState(initial?.date ?? "");
   const [error, setError] = useState("");
+  const [busy, setBusy] = useState(false);
 
-  function submit(event: FormEvent<HTMLFormElement>) {
+  async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
     if (title.trim().length < 5) return setError("Give your event a clear title with at least 5 characters.");
@@ -38,15 +39,17 @@ export function EventForm({ initial, onSave, onCancel, submitLabel }: EventFormP
     if (!safePhotoUrl(thumbnail)) return setError("Add a thumbnail URL that starts with https://.");
     if (location.trim().length < 3) return setError("Add a neighbourhood or meeting location.");
     if (!date || (tomorrow && date < tomorrow)) return setError("Choose a date in the future. Today and earlier dates are not available.");
-    onSave({
-      title: title.trim(),
-      description: description.trim(),
-      category,
-      thumbnail: safePhotoUrl(thumbnail),
-      location: location.trim(),
-      date,
-      isSample: false,
-    });
+    setBusy(true);
+    try {
+      await onSave({
+        title: title.trim(), description: description.trim(), category,
+        thumbnail: safePhotoUrl(thumbnail), location: location.trim(), date,
+      });
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Could not save this event.");
+    } finally {
+      setBusy(false);
+    }
   }
 
   return (
@@ -63,8 +66,7 @@ export function EventForm({ initial, onSave, onCancel, submitLabel }: EventFormP
         <div className="event-form-preview"><div className="event-form-preview-image"><Image src={thumbnail} alt="Preview of the event thumbnail" fill sizes="240px" unoptimized /></div><p><strong>Thumbnail preview</strong><span>This image appears on event cards.</span></p></div>
       )}
       {error && <p className="form-error" role="alert"><Icon name="leaf" size={16} /> {error}</p>}
-      <div className="event-form-actions">{onCancel && <Button variant="outline" onClick={onCancel}>Cancel</Button>}<Button type="submit" size="lg">{submitLabel ?? (initial ? "Save changes" : "Publish event")} <Icon name="arrow" size={17} /></Button></div>
-      <p className="event-form-demo-note"><Icon name="leaf" size={15} /> Demo mode: events are saved in this browser and are not published to a server.</p>
+      <div className="event-form-actions">{onCancel && <Button variant="outline" onClick={onCancel} disabled={busy}>Cancel</Button>}<Button type="submit" size="lg" disabled={busy}>{busy ? "Saving…" : submitLabel ?? (initial ? "Save changes" : "Publish event")} <Icon name="arrow" size={17} /></Button></div>
     </form>
   );
 }
